@@ -8,11 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ModelConfiguartion\General\" />
-      <Folder Include="Model\General\" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
     </ItemGroup>
 
 </Project>
