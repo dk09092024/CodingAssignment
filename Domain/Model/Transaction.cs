@@ -2,7 +2,7 @@
 
 namespace Domain.Model;
 
-public class Transaction
+public class Transaction 
 {
     public required Guid Id { get; set; } = new();
     public required decimal Amount { get; set; }

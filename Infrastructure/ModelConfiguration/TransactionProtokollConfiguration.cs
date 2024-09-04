@@ -3,7 +3,7 @@ using Domain.Model.General;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.ModelConfiguartion;
+namespace Infrastructure.ModelConfiguration;
 
 public class TransactionProtokollConfiguration : IEntityTypeConfiguration<TransactionProtokol>
 {

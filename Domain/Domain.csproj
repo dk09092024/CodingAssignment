@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Account\" />
-      <Folder Include="Features\Transaction\" />
-      <Folder Include="Features\User\" />
+      <PackageReference Include="MediatR" Version="12.4.0" />
     </ItemGroup>
 
 </Project>
