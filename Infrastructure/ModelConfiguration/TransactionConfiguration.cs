@@ -1,9 +1,8 @@
-﻿using Infrastructure.Model;
-using Infrastructure.Model.General;
+﻿using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.ModelConfiguartion;
+namespace Infrastructure.ModelConfiguration;
 
 public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
 {

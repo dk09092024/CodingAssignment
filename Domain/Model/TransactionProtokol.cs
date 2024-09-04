@@ -1,8 +1,7 @@
-﻿using Infrastructure.Model.ENUM;
-using Infrastructure.Model.General;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Model.ENUM;
+using Domain.Model.General;
 
-namespace Infrastructure.Model;
+namespace Domain.Model;
 
 public class TransactionProtokol : Entity
 { 

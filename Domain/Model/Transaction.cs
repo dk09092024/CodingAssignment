@@ -1,9 +1,8 @@
-﻿using Infrastructure.Model.ENUM;
-using Infrastructure.Model.General;
+﻿using Domain.Model.ENUM;
 
-namespace Infrastructure.Model;
+namespace Domain.Model;
 
-public class Transaction
+public class Transaction 
 {
     public required Guid Id { get; set; } = new();
     public required decimal Amount { get; set; }

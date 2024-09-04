@@ -1,6 +1,6 @@
-﻿using Infrastructure.Model.General;
+﻿using Domain.Model.General;
 
-namespace Infrastructure.Model;
+namespace Domain.Model;
 
 public class Account : Entity
 {

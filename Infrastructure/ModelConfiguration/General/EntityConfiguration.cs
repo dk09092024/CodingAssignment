@@ -1,8 +1,8 @@
-﻿using Infrastructure.Model.General;
+﻿using Domain.Model.General;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.ModelConfiguartion.General;
+namespace Infrastructure.ModelConfiguration.General;
 
 public class EntityConfiguration : IEntityTypeConfiguration<Entity>
 {
