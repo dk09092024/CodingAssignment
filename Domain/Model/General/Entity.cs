@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Model.General;
+﻿namespace Domain.Model.General;
 
 public abstract class Entity
 {

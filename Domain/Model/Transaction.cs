@@ -1,7 +1,6 @@
-﻿using Infrastructure.Model.ENUM;
-using Infrastructure.Model.General;
+﻿using Domain.Model.ENUM;
 
-namespace Infrastructure.Model;
+namespace Domain.Model;
 
 public class Transaction
 {
