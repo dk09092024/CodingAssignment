@@ -1,6 +1,6 @@
 ﻿namespace Domain.Repositories;
 
-public interface IRepository<Entity,Id>
+public interface IRepository<out TEntity,out TId>
 {
-
+    
 }

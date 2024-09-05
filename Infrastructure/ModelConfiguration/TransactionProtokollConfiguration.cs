@@ -9,21 +9,26 @@ public class TransactionProtokollConfiguration : IEntityTypeConfiguration<Transa
 {
     public void Configure(EntityTypeBuilder<TransactionProtokol> builder)
     {
-        builder.ToTable("TransactionProtokol");
+        builder.ToTable("TransactionProtokoll");
         builder.HasBaseType<Entity>();
         
-        builder.Property(history => history.BalanceBefore)
+        builder.Property(protokoll => protokoll.BalanceBefore)
             .HasPrecision(13,2);
 
-        builder.Property(history => history.BalanceAfter)
+        builder.Property(protokoll => protokoll.BalanceAfter)
             .HasPrecision(13, 2);
 
-        builder.Property(history => history.State)
+        builder.Property(protokoll => protokoll.State)
             .IsRequired();
 
-        builder.Property(history => history.TimeOfExecution);
+        builder.Property(protokoll => protokoll.TimeOfExecution);
         
-        builder.HasOne(history => history.Transaction)
-            .WithOne(transaction => transaction.TransactionProtokol);
+        builder.HasOne(protokoll => protokoll.Transaction)
+            .WithOne()
+            .HasForeignKey<TransactionProtokol>(protokoll => protokoll.TransactionId);
+        
+        builder.HasOne(protokoll => protokoll.Account)
+            .WithMany(account => account.TransactionHistory)
+            .HasForeignKey(protokoll => protokoll.AccountId);
     }
 }

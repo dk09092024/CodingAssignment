@@ -1,11 +1,27 @@
-﻿using MediatR;
+﻿using Domain.Model.ENUM;
+using Domain.Repositories;
+using Domain.Validators;
+using MediatR;
 
 namespace Domain.Features.Transaction.ValidateTransaction;
 
 public class ValidateTransactionHandler : IRequestHandler<ValidateTransactionRequest, ValidateTransactionResponse>
 {
-    public Task<ValidateTransactionResponse> Handle(ValidateTransactionRequest request, CancellationToken cancellationToken)
+    private ITransactionRepository _transactionRepository;
+    private TransactionValidator _transactionValidator = new();
+
+    public ValidateTransactionHandler(ITransactionRepository transactionRepository)
     {
-        throw new NotImplementedException();
+        _transactionRepository = transactionRepository;
+    }
+
+    public async Task<ValidateTransactionResponse> Handle(ValidateTransactionRequest request, CancellationToken cancellationToken)
+    {
+        var transactionProtokol = await _transactionRepository.GetTransactionProtocolAsync(request.TransactionId);
+        var validationResult = await _transactionValidator.ValidateAsync(transactionProtokol.Transaction, cancellationToken);
+        await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, 
+            validationResult.IsValid ? TransactionState.Valid : TransactionState.Invalid);
+        return new ValidateTransactionResponse(request.TransactionId, 
+            validationResult.IsValid ? TransactionState.Valid : TransactionState.Invalid);
     }
 }
