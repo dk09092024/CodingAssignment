@@ -14,7 +14,5 @@ public class EntityConfiguration : IEntityTypeConfiguration<Entity>
             .IsRequired();
         
         builder.Property(e => e.LastModified);
-        
-        builder.Property(e => e.TimeDeleted);
     }
 }
