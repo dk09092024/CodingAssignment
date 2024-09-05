@@ -15,7 +15,7 @@ public class GetCustomerInformationHandler : IRequestHandler<GetCustomerInformat
     public async Task<GetCustomerInformationResponse> Handle(GetCustomerInformationRequest request, CancellationToken cancellationToken)
     {
         return new GetCustomerInformationResponse( 
-            await _customerRepository.GetCustomerInformationAsync(request.CustomerId)
+            await _customerRepository.GetCustomerInformationAsync(request.CustomerId, isIncludingAccounts: true)
         );
     }
 }
