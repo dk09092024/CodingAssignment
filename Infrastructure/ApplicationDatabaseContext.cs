@@ -30,11 +30,5 @@ public class ApplicationDatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        /*
-        modelBuilder.ApplyConfiguration(new AccountConfiguration());
-        modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-        modelBuilder.ApplyConfiguration(new TransactionConfiguration());
-        modelBuilder.ApplyConfiguration(new TransactionProtokolConfiguration());
-        */
     }
 }
