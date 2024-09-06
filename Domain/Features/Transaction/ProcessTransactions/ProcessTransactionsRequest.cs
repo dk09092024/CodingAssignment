@@ -2,4 +2,4 @@
 
 namespace Domain.Features.Transaction.ProcessTransactions;
 
-public record ProcessTransactionsRequest(Guid AccountId, Guid[] ValidatedTransactionIds) : IRequest<ProcessTransactionsResponse>;
+public record ProcessTransactionsRequest() : IRequest<ProcessTransactionsResponse>;

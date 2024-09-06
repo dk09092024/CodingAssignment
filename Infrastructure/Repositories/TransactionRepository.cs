@@ -46,7 +46,8 @@ public class TransactionRepository : ITransactionRepository
 
     public async Task<TransactionProtokol> GetTransactionProtocolAsync(Guid requestTransactionId)
     {
-        return await _repositoryContext.TransactionProtokols.SingleAsync(t => t.TransactionId == requestTransactionId);
+        return await _repositoryContext.TransactionProtokols.Include(tp=> tp.Transaction)
+            .SingleAsync(t => t.TransactionId == requestTransactionId);
     }
 
     public async Task UpdateTransactionStateAsync(TransactionProtokol transactionProtokol, TransactionState state,
@@ -54,6 +55,9 @@ public class TransactionRepository : ITransactionRepository
         decimal? balanceAfterExcecution = null)
     {
         transactionProtokol.State = state;
+        transactionProtokol.TimeOfExecution = timeOfExcecution ?? transactionProtokol.TimeOfExecution;
+        transactionProtokol.BalanceBefore = balanceBeforeExecution ?? transactionProtokol.BalanceBefore;
+        transactionProtokol.BalanceAfter = balanceAfterExcecution ?? transactionProtokol.BalanceAfter;
         await _repositoryContext.SaveChangesAsync();
     }
 
@@ -63,9 +67,9 @@ public class TransactionRepository : ITransactionRepository
             .Include(protokol => protokol.Transaction)
             .Where(protokol => requestValidatedTransactionIds.Any(id => id == protokol.TransactionId))
             .ToListAsync();
-        if(onlyForAccountId.HasValue && protokols.All(tp => tp.AccountId == onlyForAccountId))
+        if(onlyForAccountId.HasValue && protokols.Any(tp => tp.AccountId != onlyForAccountId))
             throw new Exception("Includes transactions from other accounts");
-        if(onlyInState.HasValue && protokols.All(tp => tp.State == onlyInState))
+        if(onlyInState.HasValue && protokols.Any(tp => tp.State != onlyInState))
             throw new Exception("Includes transactions in other states");
         return protokols;
 

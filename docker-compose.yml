@@ -4,3 +4,9 @@
     build:
       context: .
       dockerfile: BankingAccountApi/Dockerfile
+
+  transactionapi:
+    image: transactionapi
+    build:
+      context: .
+      dockerfile: TransactionApi/Dockerfile

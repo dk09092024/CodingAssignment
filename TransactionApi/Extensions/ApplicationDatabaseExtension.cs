@@ -1,8 +1,6 @@
 ﻿using Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace BankingAccountApi.Extensions;
+namespace TransactionApi.Extensions;
 
 public static class ApplicationDatabaseExtension
 {
