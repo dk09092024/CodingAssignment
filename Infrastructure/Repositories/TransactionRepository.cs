@@ -24,7 +24,8 @@ public class TransactionRepository : ITransactionRepository
             Id = Guid.NewGuid(),
             TargetAccount = account,
             Type = transactionType,
-            TimeRecived = timeRecived
+            TimeRecived = timeRecived,
+            TargetAccountId = accountId
         };
         _repositoryContext.Transactions.Add(transaction);
         await _repositoryContext.SaveChangesAsync();

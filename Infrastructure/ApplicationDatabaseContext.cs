@@ -1,4 +1,6 @@
-﻿using Domain.Model;
+﻿using System.Reflection;
+using Domain.Model;
+using Infrastructure.ModelConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
@@ -14,11 +16,25 @@ public class ApplicationDatabaseContext : DbContext
     {
         
     }
+    public ApplicationDatabaseContext() : base()
+    {
+        
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=banking.db");
+        optionsBuilder.UseSqlite("Data Source=../Infrastructure/Database/banking.db");
     }
-    
-    
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        /*
+        modelBuilder.ApplyConfiguration(new AccountConfiguration());
+        modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+        modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+        modelBuilder.ApplyConfiguration(new TransactionProtokolConfiguration());
+        */
+    }
 }

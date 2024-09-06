@@ -23,7 +23,8 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
             .IsRequired();
         
         builder.HasOne(transaction => transaction.TargetAccount)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey<Transaction>(account => account.TargetAccountId);
         
     }
 }
