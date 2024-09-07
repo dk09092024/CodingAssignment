@@ -2,4 +2,6 @@
 
 namespace Domain.Features.Customer.GetCustomerInformation;
 
-public record GetCustomerInformationRequest(Guid CustomerId) : IRequest<GetCustomerInformationResponse>;
+public abstract record BaseGetCustomerInformationRequest(Guid CustomerId) : IRequest<GetCustomerInformationResponse>;
+
+public record GetCustomerInformationRequest(Guid CustomerId) : BaseGetCustomerInformationRequest(CustomerId);

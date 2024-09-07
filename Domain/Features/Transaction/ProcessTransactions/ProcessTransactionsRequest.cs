@@ -2,4 +2,6 @@
 
 namespace Domain.Features.Transaction.ProcessTransactions;
 
-public record ProcessTransactionsRequest() : IRequest<ProcessTransactionsResponse>;
+public abstract record BaseProcessTransactionsRequest() : IRequest<ProcessTransactionsResponse>;
+
+public record ProcessTransactionsRequest() : BaseProcessTransactionsRequest();

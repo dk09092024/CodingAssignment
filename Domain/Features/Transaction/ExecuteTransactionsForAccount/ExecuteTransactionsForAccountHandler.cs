@@ -1,10 +1,9 @@
-﻿using Domain.Features.Transaction.ProcessTransactions;
-using Domain.Model;
+﻿using Domain.Model;
 using Domain.Model.ENUM;
 using Domain.Repositories;
 using MediatR;
 
-namespace Domain.Features.Transaction.ExecuteTransaction;
+namespace Domain.Features.Transaction.ExecuteTransactionsForAccount;
 
 public class ExecuteTransactionsForAccountHandler : IRequestHandler<ExecuteTransactionsForAccountRequest, ExecuteTransactionsForAccountResponse>
 {
