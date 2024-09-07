@@ -1,8 +1,11 @@
 ﻿using MediatR;
 
-namespace Domain.Features.Transaction.ExecuteTransaction;
+namespace Domain.Features.Transaction.ExecuteTransactionsForAccount;
 
-public record ExecuteTransactionsForAccountRequest(Guid AccountId,Guid[] ValidatedTransactionIds ) : IRequest<ExecuteTransactionsForAccountResponse>
-{
+public abstract record BaseExecuteTransactionsForAccountRequest(Guid AccountId, Guid[] ValidatedTransactionIds)
+    : IRequest<ExecuteTransactionsForAccountResponse>;
     
-}
+public record ExecuteTransactionsForAccountRequest(Guid AccountId, Guid[] ValidatedTransactionIds) 
+    : BaseExecuteTransactionsForAccountRequest(AccountId, 
+        ValidatedTransactionIds.Length>1 ? ValidatedTransactionIds 
+            : throw new ArgumentOutOfRangeException(nameof(ValidatedTransactionIds))); 

@@ -2,4 +2,6 @@
 
 namespace Domain.Features.Transaction.ValidateTransaction;
 
-public record ValidateTransactionRequest(Guid TransactionId) : IRequest<ValidateTransactionResponse>;
+public abstract record BaseValidateTransactionRequest(Guid TransactionId) : IRequest<ValidateTransactionResponse>;
+
+public record ValidateTransactionRequest(Guid TransactionId) : BaseValidateTransactionRequest(TransactionId);
