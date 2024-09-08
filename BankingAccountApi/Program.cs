@@ -1,6 +1,7 @@
 
 
 using BankingAccountApi.Extensions;
+using Infrastructure;
 
 namespace BankingAccountApi;
 
@@ -31,6 +32,11 @@ public class Program
 
         app.UseAuthorization();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
+            db.Database.EnsureCreated();
+        }
 
         app.MapControllers();
 

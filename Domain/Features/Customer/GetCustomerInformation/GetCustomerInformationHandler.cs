@@ -16,7 +16,12 @@ public class GetCustomerInformationHandler : IRequestHandler<GetCustomerInformat
     public async Task<GetCustomerInformationResponse> Handle(GetCustomerInformationRequest request, CancellationToken cancellationToken)
     {
         var customer = await _customerRepository.GetCustomerInformationAsync(request.CustomerId,isIncludingAccounts: true);
-        var accountResponses = customer.Accounts.Select(a => 
+        return new GetCustomerInformationResponse(customer.Id, customer.Name, customer.Surname, GetAccountResponses(customer));
+    }
+
+    private CustomerAccountResponse[] GetAccountResponses(Model.Customer customer)
+    {
+        return customer.Accounts.Select(a => 
             new CustomerAccountResponse(
                 a.Id, 
                 a.Balance, 
@@ -33,6 +38,5 @@ public class GetCustomerInformationHandler : IRequestHandler<GetCustomerInformat
                         tp.BalanceAfter)
                 ).ToArray())
         ).ToArray();
-        return new GetCustomerInformationResponse(customer.Id, customer.Name, customer.Surname, accountResponses);
     }
 }
