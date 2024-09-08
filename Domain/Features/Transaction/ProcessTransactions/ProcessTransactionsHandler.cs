@@ -31,6 +31,10 @@ public class ProcessTransactionsHandler : IRequestHandler<ProcessTransactionsReq
             BackgroundJob.Enqueue(() => _mediator.Send(new ValidateTransactionRequest(recivedTransaction.TransactionId), cancellationToken));
         }
 
+        foreach (var validTransactionProtokoll in validTransactionProtokolls)
+        {
+            await _transactionRepository.UpdateTransactionStateAsync(validTransactionProtokoll, TransactionState.Processing);
+        }
         foreach (var accountId in validTransactionProtokolls.Select(protokol => protokol.AccountId ).Distinct())
         {
             BackgroundJob.Enqueue(() => _mediator.Send(new ExecuteTransactionsForAccountRequest(accountId, validTransactionProtokolls.Select(protokol => protokol.TransactionId).ToArray()), cancellationToken));
