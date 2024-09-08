@@ -4,6 +4,6 @@ namespace Domain.Repositories;
 
 public interface ICustomerRepository : IRepository<Customer,Guid>
 {
-    public Task AddAsync(Customer customer);
-    public Task<Customer> GetCustomerInformationAsync(Guid requestCustomerId, bool? isIncludingAccounts = false);
+    public Task AddAsync(Customer customer,CancellationToken? cancellationToken = null);
+    public Task<Customer> GetCustomerInformationAsync(Guid requestCustomerId, bool? isIncludingAccounts = false,CancellationToken? cancellationToken = null);
 }

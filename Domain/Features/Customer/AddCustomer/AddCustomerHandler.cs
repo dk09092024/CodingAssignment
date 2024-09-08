@@ -22,7 +22,7 @@ public class AddCustomerHandler : IRequestHandler<AddCustomerRequest, AddCustome
             Id = Guid.NewGuid(),
             TimeCreated = DateTime.Now
         };
-        await _customerRepository.AddAsync(customer);
+        await _customerRepository.AddAsync(customer, cancellationToken);
         return new AddCustomerResponse(customer.Id);
     }
 }

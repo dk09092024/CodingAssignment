@@ -13,9 +13,9 @@ public class AccountRepository : IAccountRepository
         _repositoryContext = repositoryContext;
     }
 
-    public async Task<Account> OpenNewAccountAsync(Guid customerId)
+    public async Task<Account> OpenNewAccountAsync(Guid customerId,CancellationToken? cancellationToken = null)
     {
-        var customer = await _repositoryContext.Customers.SingleAsync(c => c.Id==customerId);
+        var customer = await _repositoryContext.Customers.SingleAsync(c => c.Id==customerId,cancellationToken ?? CancellationToken.None);
         var account = new Account
         {
             Balance = 0,
@@ -28,13 +28,13 @@ public class AccountRepository : IAccountRepository
         return account;
     }
 
-    private async Task AddAccountAsync(Account account)
+    private async Task AddAccountAsync(Account account,CancellationToken? cancellationToken = null)
     {
         _repositoryContext.Accounts.Add(account);
-        await _repositoryContext.SaveChangesAsync();
+        await _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<Account> GetAccountAsync(Guid accountId, bool? isIncludingTransactionHistory)
+    public async Task<Account> GetAccountAsync(Guid accountId, bool? isIncludingTransactionHistory,CancellationToken? cancellationToken = null)
     {
         var query = _repositoryContext.Accounts.AsQueryable();
         if (isIncludingTransactionHistory ?? false)
@@ -42,18 +42,18 @@ public class AccountRepository : IAccountRepository
             query = query.Include(a => a.TransactionHistory)
                 .ThenInclude(tp => tp.Transaction);
         }
-        return await query.SingleAsync(s => s.Id == accountId);
+        return await query.SingleAsync(s => s.Id == accountId,cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<bool> ExistAccountAsync(Guid accountId)
+    public async Task<bool> ExistAccountAsync(Guid accountId,CancellationToken? cancellationToken = null)
     {
-        return await _repositoryContext.Accounts.AnyAsync(a => a.Id == accountId);
+        return await _repositoryContext.Accounts.AnyAsync(a => a.Id == accountId,cancellationToken ?? CancellationToken.None);
     }
 
-    public Task UpdateAccountAsync(Account account)
+    public Task UpdateAccountAsync(Account account,CancellationToken? cancellationToken = null)
     {
         account.LastModified= DateTime.Now;
         _repositoryContext.Accounts.Update(account);
-        return _repositoryContext.SaveChangesAsync();
+        return _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
     }
 }

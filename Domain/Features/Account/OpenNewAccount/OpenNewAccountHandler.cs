@@ -20,7 +20,8 @@ public class OpenNewAccountHandler : IRequestHandler<OpenNewAccountRequest, Open
         var account = await _accountRepository.OpenNewAccountAsync(request.CustomerId);
         if(request.InitialBalance > 0)
         {
-            var transaction = await _transactionRepository.AddTransactionAsync(account.Id, request.InitialBalance, TransactionType.Initial, DateTime.Now);
+            var transaction = await _transactionRepository.AddTransactionAsync(account.Id, request.InitialBalance, TransactionType.Initial, 
+                DateTime.Now, cancellationToken);
             return new OpenNewAccountResponse(account.Id, transaction.Id);
         }
         return new OpenNewAccountResponse(account.Id);
