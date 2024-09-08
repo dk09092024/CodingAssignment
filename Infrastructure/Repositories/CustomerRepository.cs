@@ -13,13 +13,13 @@ public class CustomerRepository : ICustomerRepository
         _repositoryContext = repositoryContext;
     }
 
-    public async Task AddAsync(Customer entity)
+    public async Task AddAsync(Customer entity,CancellationToken? cancellationToken = null)
     {
         _repositoryContext.Customers.Add(entity);
-        await _repositoryContext.SaveChangesAsync();
+        await _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<Customer> GetCustomerInformationAsync(Guid requestCustomerId, bool? isIncludingAccounts = false)
+    public async Task<Customer> GetCustomerInformationAsync(Guid requestCustomerId, bool? isIncludingAccounts = false,CancellationToken? cancellationToken = null)
     {
         var query = _repositoryContext.Customers.AsQueryable();
         if (isIncludingAccounts ?? false)
@@ -28,6 +28,6 @@ public class CustomerRepository : ICustomerRepository
                 .ThenInclude(a=>a.TransactionHistory)
                 .ThenInclude(tp => tp.Transaction);
         }
-        return await query.SingleAsync(s=>s.Id == requestCustomerId);
+        return await query.SingleAsync(s=>s.Id == requestCustomerId,cancellationToken ?? CancellationToken.None);
     }
 }

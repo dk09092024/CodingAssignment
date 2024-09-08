@@ -23,21 +23,28 @@ public class ProcessTransactionsHandler : IRequestHandler<ProcessTransactionsReq
 
     public async Task<ProcessTransactionsResponse> Handle(ProcessTransactionsRequest request, CancellationToken cancellationToken)
     {
-        var recivedTransactionProtokolls = await _transactionRepository.GetAllRecivedTransactionsAsync(BatchSizeValidation);
-        var validTransactionProtokolls= await _transactionRepository.GetAllValidTransactionsAsync(BatchSizeExecution);
+        var recivedTransactionProtokolls = 
+            await _transactionRepository.GetAllRecivedTransactionsAsync(BatchSizeValidation, cancellationToken);
+        var validTransactionProtokolls= 
+            await _transactionRepository.GetAllValidTransactionsAsync(BatchSizeExecution, cancellationToken);
 
         foreach (var recivedTransaction in recivedTransactionProtokolls)
         {
-            BackgroundJob.Enqueue(() => _mediator.Send(new ValidateTransactionRequest(recivedTransaction.TransactionId), cancellationToken));
+            if(!cancellationToken.IsCancellationRequested)
+                BackgroundJob.Enqueue(() => _mediator.Send(new ValidateTransactionRequest(recivedTransaction.TransactionId),
+                    new CancellationToken()));
         }
 
         foreach (var validTransactionProtokoll in validTransactionProtokolls)
         {
-            await _transactionRepository.UpdateTransactionStateAsync(validTransactionProtokoll, TransactionState.Processing);
+            await _transactionRepository.UpdateTransactionStateAsync(validTransactionProtokoll, TransactionState.Processing,
+                null, null, null,cancellationToken);
         }
         foreach (var accountId in validTransactionProtokolls.Select(protokol => protokol.AccountId ).Distinct())
         {
-            BackgroundJob.Enqueue(() => _mediator.Send(new ExecuteTransactionsForAccountRequest(accountId, validTransactionProtokolls.Select(protokol => protokol.TransactionId).ToArray()), cancellationToken));
+            if(!cancellationToken.IsCancellationRequested)
+                BackgroundJob.Enqueue(() => _mediator.Send(new ExecuteTransactionsForAccountRequest(accountId,
+                    validTransactionProtokolls.Select(protokol => protokol.TransactionId).ToArray()), new CancellationToken()));
         }
         return new ProcessTransactionsResponse(recivedTransactionProtokolls.Count, validTransactionProtokolls.Count);
 
