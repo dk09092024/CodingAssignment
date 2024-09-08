@@ -1,0 +1,72 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  bankingaccountapi:
+    build:
+      context: "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment"
+      dockerfile: "BankingAccountApi/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "bankingaccountapi:dev"
+    ports:
+    - "127.0.0.1:57056:57100"
+    - "127.0.0.1:57256:57300"
+    volumes:
+    - "C:\\Users\\Daniel\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment\\BankingAccountApi:/app:rw"
+    - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment:/src:rw"
+    - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.2.3\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Users\\Daniel\\AppData\\Local\\Programs\\Rider\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\Rider2024.2\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_9_08_22_02_54:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
+  transactionapi:
+    build:
+      context: "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment"
+      dockerfile: "TransactionApi/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "transactionapi:dev"
+    ports:
+    - "127.0.0.1:57057:57100"
+    - "127.0.0.1:57257:57300"
+    volumes:
+    - "C:\\Users\\Daniel\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment\\TransactionApi:/app:rw"
+    - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment:/src:rw"
+    - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2024.2.3\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Users\\Daniel\\AppData\\Local\\Programs\\Rider\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\Rider2024.2\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_9_08_22_02_54:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
