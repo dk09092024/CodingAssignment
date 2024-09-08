@@ -7,5 +7,5 @@ public abstract record BaseExecuteTransactionsForAccountRequest(Guid AccountId, 
     
 public record ExecuteTransactionsForAccountRequest(Guid AccountId, Guid[] ValidatedTransactionIds) 
     : BaseExecuteTransactionsForAccountRequest(AccountId, 
-        ValidatedTransactionIds.Length>1 ? ValidatedTransactionIds 
+        ValidatedTransactionIds.Length>0 ? ValidatedTransactionIds 
             : throw new ArgumentOutOfRangeException(nameof(ValidatedTransactionIds))); 

@@ -12,6 +12,7 @@ public static class HangfireExtension
                 provider.ServerName = "TransactionServer";
                 provider.WorkerCount = 5;
             });
+        
         services.AddHangfire(cfg =>
         {
             cfg.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)

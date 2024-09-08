@@ -1,5 +1,6 @@
 using Domain.Features.Transaction.ProcessTransactions;
 using Hangfire;
+using Hangfire.Dashboard;
 using MediatR;
 using TransactionApi.Extensions;
 using TransactionApi.Extensions.Hangfire;
@@ -11,11 +12,9 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-
+        
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -33,18 +32,26 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseHangfireDashboard();
+        
+        app.UseHangfireDashboard("/hangfire",new DashboardOptions
+        {
+            Authorization = Array.Empty<IDashboardAuthorizationFilter>()
+        });
         app.MapHangfireDashboard();
         
-        RecurringJob.AddOrUpdate("ProcessTransactions",() => 
-            app.Services.GetRequiredService<IMediator>().Send(new ProcessTransactionsRequest(),
-                default), Cron.Minutely);
+        AddRecurringJobs(app);
 
         app.UseAuthorization();
 
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static void AddRecurringJobs(WebApplication app)
+    {
+        RecurringJob.AddOrUpdate("ProcessTransactions",() => 
+            app.Services.GetRequiredService<IMediator>().Send(new ProcessTransactionsRequest(),
+                default), Cron.Minutely);
     }
 }

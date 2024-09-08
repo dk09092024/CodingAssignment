@@ -23,7 +23,8 @@ public class ApplicationDatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=../Infrastructure/Database/banking.db");
+        optionsBuilder.UseSqlite("Data Source=/Database/banking.db");
+        //optionsBuilder.UseSqlite("Data Source=/Infrastructure/Database/banking.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
