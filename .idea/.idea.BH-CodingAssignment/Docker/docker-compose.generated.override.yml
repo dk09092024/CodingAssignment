@@ -23,8 +23,8 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "bankingaccountapi:dev"
     ports:
-    - "127.0.0.1:57048:57100"
-    - "127.0.0.1:57248:57300"
+    - "127.0.0.1:57056:57100"
+    - "127.0.0.1:57256:57300"
     volumes:
     - "C:\\Users\\Daniel\\.nuget\\packages:/home/app/.nuget/packages"
     - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment\\BankingAccountApi:/app:rw"
@@ -33,7 +33,7 @@ services:
       Linux64:/opt/rider-debugger"
     - "C:\\Users\\Daniel\\AppData\\Local\\Programs\\Rider\\bin:/etc/opt/rider-debugger/backend-log.xml"
     - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\Rider2024.2\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2024_9_08_21_13_09:/var/opt/rider-debugger:rw"
+      JetBrains.Debugger.Worker.2024_9_08_22_02_54:/var/opt/rider-debugger:rw"
     working_dir: "/app"
   transactionapi:
     build:
@@ -58,8 +58,8 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "transactionapi:dev"
     ports:
-    - "127.0.0.1:57049:57100"
-    - "127.0.0.1:57249:57300"
+    - "127.0.0.1:57057:57100"
+    - "127.0.0.1:57257:57300"
     volumes:
     - "C:\\Users\\Daniel\\.nuget\\packages:/home/app/.nuget/packages"
     - "C:\\Users\\Daniel\\RiderProjects\\BH-CodingAssignment\\TransactionApi:/app:rw"
@@ -68,5 +68,5 @@ services:
       Linux64:/opt/rider-debugger"
     - "C:\\Users\\Daniel\\AppData\\Local\\Programs\\Rider\\bin:/etc/opt/rider-debugger/backend-log.xml"
     - "C:\\Users\\Daniel\\AppData\\Local\\JetBrains\\Rider2024.2\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2024_9_08_21_13_09:/var/opt/rider-debugger:rw"
+      JetBrains.Debugger.Worker.2024_9_08_22_02_54:/var/opt/rider-debugger:rw"
     working_dir: "/app"

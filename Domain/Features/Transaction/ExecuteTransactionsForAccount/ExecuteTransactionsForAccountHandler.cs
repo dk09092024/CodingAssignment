@@ -18,7 +18,7 @@ public class ExecuteTransactionsForAccountHandler : IRequestHandler<ExecuteTrans
 
     public async Task<ExecuteTransactionsForAccountResponse> Handle(ExecuteTransactionsForAccountRequest request, CancellationToken cancellationToken)
     {
-        var transactionprotokolls = await _transactionRepository.GetAllTransactionsAsync(request.ValidatedTransactionIds,request.AccountId,TransactionState.Valid);
+        var transactionprotokolls = await _transactionRepository.GetAllTransactionsAsync(request.ValidatedTransactionIds,request.AccountId,TransactionState.Processing);
         var account = await _accountRepository.GetAccountAsync(request.AccountId);
         await ProcessInitalTransactions(account, transactionprotokolls);
         await ProcessDepositTransactions(account, transactionprotokolls);
@@ -50,7 +50,7 @@ public class ExecuteTransactionsForAccountHandler : IRequestHandler<ExecuteTrans
     private async Task ProcessWithdrawalTransactions(Model.Account account, List<TransactionProtokol> transactionprotokolls)
     {
         foreach (var transactionProtokol in transactionprotokolls
-                     .Where(protokol => protokol.Transaction.Type == TransactionType.Initial)
+                     .Where(protokol => protokol.Transaction.Type == TransactionType.Withdrawal)
                      .OrderBy(protokol => protokol.Transaction.TimeRecived))
         {
             if(account.Balance < transactionProtokol.Transaction.Amount)
