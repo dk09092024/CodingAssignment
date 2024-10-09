@@ -1,5 +1,4 @@
-﻿using System.Transactions;
-using Domain.Repositories;
+﻿using Domain.Repositories;
 using MediatR;
 
 namespace Domain.Features.Customer.GetCustomerInformation;
@@ -33,7 +32,7 @@ public class GetCustomerInformationHandler : IRequestHandler<GetCustomerInformat
                         new CustomerTransactionResponse(tp.TransactionId,
                             tp.Transaction.Type,
                             tp.Transaction.Amount,
-                            tp.Transaction.TimeRecived),
+                            tp.Transaction.TimeReceived),
                         tp.TimeOfExecution,
                         tp.BalanceBefore,
                         tp.BalanceAfter)

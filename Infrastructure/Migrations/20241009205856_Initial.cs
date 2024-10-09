@@ -76,7 +76,7 @@ namespace Infrastructure.Migrations
                     Amount = table.Column<decimal>(type: "TEXT", precision: 13, scale: 2, nullable: false),
                     TargetAccountId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    TimeRecived = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    TimeReceived = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,7 +90,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransactionProtokoll",
+                name: "TransactionProtocoll",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -103,21 +103,21 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransactionProtokoll", x => x.Id);
+                    table.PrimaryKey("PK_TransactionProtocoll", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TransactionProtokoll_Account_AccountId",
+                        name: "FK_TransactionProtocoll_Account_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Account",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TransactionProtokoll_Entity_Id",
+                        name: "FK_TransactionProtocoll_Entity_Id",
                         column: x => x.Id,
                         principalTable: "Entity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TransactionProtokoll_Transaction_TransactionId",
+                        name: "FK_TransactionProtocoll_Transaction_TransactionId",
                         column: x => x.TransactionId,
                         principalTable: "Transaction",
                         principalColumn: "Id",
@@ -136,13 +136,13 @@ namespace Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionProtokoll_AccountId",
-                table: "TransactionProtokoll",
+                name: "IX_TransactionProtocoll_AccountId",
+                table: "TransactionProtocoll",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionProtokoll_TransactionId",
-                table: "TransactionProtokoll",
+                name: "IX_TransactionProtocoll_TransactionId",
+                table: "TransactionProtocoll",
                 column: "TransactionId",
                 unique: true);
         }
@@ -151,7 +151,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TransactionProtokoll");
+                name: "TransactionProtocoll");
 
             migrationBuilder.DropTable(
                 name: "Transaction");

@@ -18,56 +18,56 @@ public class ExecuteTransactionsForAccountHandler : IRequestHandler<ExecuteTrans
 
     public async Task<ExecuteTransactionsForAccountResponse> Handle(ExecuteTransactionsForAccountRequest request, CancellationToken cancellationToken)
     {
-        var transactionprotokolls = await _transactionRepository.GetAllTransactionsAsync(request.ValidatedTransactionIds,
+        var transactionprotocolls = await _transactionRepository.GetAllTransactionsAsync(request.ValidatedTransactionIds,
             request.AccountId,TransactionState.Processing, cancellationToken);
         var account = await _accountRepository.GetAccountAsync(request.AccountId,isIncludingTransactionHistory:false, cancellationToken);
-        await ProcessInitalTransactions(account, transactionprotokolls, cancellationToken);
-        await ProcessDepositTransactions(account, transactionprotokolls, cancellationToken);
-        await ProcessWithdrawalTransactions(account, transactionprotokolls, cancellationToken);
+        await ProcessInitalTransactions(account, transactionprotocolls, cancellationToken);
+        await ProcessDepositTransactions(account, transactionprotocolls, cancellationToken);
+        await ProcessWithdrawalTransactions(account, transactionprotocolls, cancellationToken);
         return new ExecuteTransactionsForAccountResponse(
-            transactionprotokolls.Select(protokol => new ExecutedTransaction(protokol.Transaction.Id, protokol.Transaction.Type, protokol.State)).ToArray()
+            transactionprotocolls.Select(protocol => new ExecutedTransaction(protocol.Transaction.Id, protocol.Transaction.Type, protocol.State)).ToArray()
             );
     }
-    private async Task ProcessInitalTransactions(Model.Account account, List<TransactionProtokol> transactionprotokolls,
+    private async Task ProcessInitalTransactions(Model.Account account, List<TransactionProtocol> transactionprotocolls,
         CancellationToken? cancellationToken)
     {
-        foreach (var transactionProtokol in transactionprotokolls.Where(protokol => protokol.Transaction.Type == TransactionType.Initial))
+        foreach (var transactionProtocol in transactionprotocolls.Where(protocol => protocol.Transaction.Type == TransactionType.Initial))
         {
             var balanceBefore = account.Balance;
-            account.Balance += transactionProtokol.Transaction.Amount;
+            account.Balance += transactionProtocol.Transaction.Amount;
             await _accountRepository.UpdateAccountAsync(account, cancellationToken);
-            await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, TransactionState.Completed, DateTime.Now, balanceBefore, account.Balance, cancellationToken);
+            await _transactionRepository.UpdateTransactionStateAsync(transactionProtocol, TransactionState.Completed, DateTime.Now, balanceBefore, account.Balance, cancellationToken);
         }
     }
     private async Task ProcessDepositTransactions(Model.Account account,
-        List<TransactionProtokol> transactionprotokolls, CancellationToken? cancellationToken)
+        List<TransactionProtocol> transactionprotocolls, CancellationToken? cancellationToken)
     {
-        foreach (var transactionProtokol in transactionprotokolls.Where(protokol => protokol.Transaction.Type == TransactionType.Deposit))
+        foreach (var transactionProtocol in transactionprotocolls.Where(protocol => protocol.Transaction.Type == TransactionType.Deposit))
         {
             var balanceBefore = account.Balance;
-            account.Balance += transactionProtokol.Transaction.Amount;
+            account.Balance += transactionProtocol.Transaction.Amount;
             await _accountRepository.UpdateAccountAsync(account, cancellationToken);
-            await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, TransactionState.Completed,
+            await _transactionRepository.UpdateTransactionStateAsync(transactionProtocol, TransactionState.Completed,
                 DateTime.Now, balanceBefore, account.Balance, cancellationToken);
         }
     }
     private async Task ProcessWithdrawalTransactions(Model.Account account,
-        List<TransactionProtokol> transactionprotokolls, CancellationToken? cancellationToken)
+        List<TransactionProtocol> transactionprotocolls, CancellationToken? cancellationToken)
     {
-        foreach (var transactionProtokol in transactionprotokolls
-                     .Where(protokol => protokol.Transaction.Type == TransactionType.Withdrawal)
-                     .OrderBy(protokol => protokol.Transaction.TimeRecived))
+        foreach (var transactionProtocol in transactionprotocolls
+                     .Where(protocol => protocol.Transaction.Type == TransactionType.Withdrawal)
+                     .OrderBy(protocol => protocol.Transaction.TimeReceived))
         {
-            if(account.Balance < transactionProtokol.Transaction.Amount)
+            if(account.Balance < transactionProtocol.Transaction.Amount)
             {
-                await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, TransactionState.Failed); ;
+                await _transactionRepository.UpdateTransactionStateAsync(transactionProtocol, TransactionState.Failed);
             }
             else
             {
                 var balanceBefore = account.Balance;
-                account.Balance += transactionProtokol.Transaction.Amount;
+                account.Balance += transactionProtocol.Transaction.Amount;
                 await _accountRepository.UpdateAccountAsync(account, cancellationToken);
-                await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, TransactionState.Completed,
+                await _transactionRepository.UpdateTransactionStateAsync(transactionProtocol, TransactionState.Completed,
                     DateTime.Now, balanceBefore, account.Balance, cancellationToken);
             }
         }

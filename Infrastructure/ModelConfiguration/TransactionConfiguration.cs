@@ -19,7 +19,7 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(transaction => transaction.Type)
             .IsRequired();
         
-        builder.Property(transaction => transaction.TimeRecived)
+        builder.Property(transaction => transaction.TimeReceived)
             .IsRequired();
         
         builder.HasOne(transaction => transaction.TargetAccount)

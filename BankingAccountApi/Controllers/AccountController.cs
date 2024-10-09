@@ -1,6 +1,5 @@
 using Domain.Features.Account.OpenNewAccount;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAccountApi.Controllers
@@ -16,7 +15,7 @@ namespace BankingAccountApi.Controllers
             _mediator = mediator;
         }
         
-        [HttpPost("open-new-account")]
+        [HttpPost("account")]
         public async Task<IActionResult> OpenNewAccount(OpenNewAccountRequest request)
         {
             var response = await _mediator.Send(request);
