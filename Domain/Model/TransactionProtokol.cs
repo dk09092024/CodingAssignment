@@ -3,7 +3,7 @@ using Domain.Model.General;
 
 namespace Domain.Model;
 
-public class TransactionProtokol : Entity
+public class TransactionProtocol : Entity
 { 
     public required Guid AccountId { get; set; }
     public required Account Account { get; set; }

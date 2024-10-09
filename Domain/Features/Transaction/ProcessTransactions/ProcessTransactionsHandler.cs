@@ -1,6 +1,5 @@
 ﻿using Domain.Features.Transaction.ExecuteTransactionsForAccount;
 using Domain.Features.Transaction.ValidateTransaction;
-using Domain.Model;
 using Domain.Model.ENUM;
 using Domain.Repositories;
 using Hangfire;
@@ -15,7 +14,7 @@ public class ProcessTransactionsHandler : IRequestHandler<ProcessTransactionsReq
     private ITransactionRepository _transactionRepository;
     private IMediator _mediator;
 
-    public ProcessTransactionsHandler(ITransactionRepository transactionRepository, IAccountRepository accountRepository, IMediator mediator)
+    public ProcessTransactionsHandler(ITransactionRepository transactionRepository, IMediator mediator)
     {
         _transactionRepository = transactionRepository;
         _mediator = mediator;
@@ -23,30 +22,30 @@ public class ProcessTransactionsHandler : IRequestHandler<ProcessTransactionsReq
 
     public async Task<ProcessTransactionsResponse> Handle(ProcessTransactionsRequest request, CancellationToken cancellationToken)
     {
-        var recivedTransactionProtokolls = 
-            await _transactionRepository.GetAllRecivedTransactionsAsync(BatchSizeValidation, cancellationToken);
-        var validTransactionProtokolls= 
+        var recivedTransactionProtocolls = 
+            await _transactionRepository.GetAllReceivedTransactionsAsync(BatchSizeValidation, cancellationToken);
+        var validTransactionProtocolls= 
             await _transactionRepository.GetAllValidTransactionsAsync(BatchSizeExecution, cancellationToken);
 
-        foreach (var recivedTransaction in recivedTransactionProtokolls)
+        foreach (var recivedTransaction in recivedTransactionProtocolls)
         {
             if(!cancellationToken.IsCancellationRequested)
                 BackgroundJob.Enqueue(() => _mediator.Send(new ValidateTransactionRequest(recivedTransaction.TransactionId),
                     new CancellationToken()));
         }
 
-        foreach (var validTransactionProtokoll in validTransactionProtokolls)
+        foreach (var validTransactionProtocoll in validTransactionProtocolls)
         {
-            await _transactionRepository.UpdateTransactionStateAsync(validTransactionProtokoll, TransactionState.Processing,
+            await _transactionRepository.UpdateTransactionStateAsync(validTransactionProtocoll, TransactionState.Processing,
                 null, null, null,cancellationToken);
         }
-        foreach (var accountId in validTransactionProtokolls.Select(protokol => protokol.AccountId ).Distinct())
+        foreach (var accountId in validTransactionProtocolls.Select(protocol => protocol.AccountId ).Distinct())
         {
             if(!cancellationToken.IsCancellationRequested)
                 BackgroundJob.Enqueue(() => _mediator.Send(new ExecuteTransactionsForAccountRequest(accountId,
-                    validTransactionProtokolls.Select(protokol => protokol.TransactionId).ToArray()), new CancellationToken()));
+                    validTransactionProtocolls.Select(protocol => protocol.TransactionId).ToArray()), new CancellationToken()));
         }
-        return new ProcessTransactionsResponse(recivedTransactionProtokolls.Count, validTransactionProtokolls.Count);
+        return new ProcessTransactionsResponse(recivedTransactionProtocolls.Count, validTransactionProtocolls.Count);
 
     }
 

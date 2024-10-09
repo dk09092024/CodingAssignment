@@ -2,7 +2,7 @@
 
 public enum TransactionState
 {
-    Recived = 0,
+    Received = 0,
     Valid = 10,
     Processing = 20,
     Completed = 30,

@@ -15,7 +15,7 @@ public class TransactionRepository : ITransactionRepository
     }
 
     public async Task<Transaction> AddTransactionAsync(Guid accountId, decimal amount,
-        TransactionType transactionType, DateTime timeRecived,CancellationToken? cancellationToken = null)
+        TransactionType transactionType, DateTime timeReceived,CancellationToken? cancellationToken = null)
     {
         var account = await _repositoryContext.Accounts.SingleAsync(a => a.Id == accountId);
         var transaction = new Transaction
@@ -24,73 +24,73 @@ public class TransactionRepository : ITransactionRepository
             Id = Guid.NewGuid(),
             TargetAccount = account,
             Type = transactionType,
-            TimeRecived = timeRecived,
+            TimeReceived = timeReceived,
             TargetAccountId = accountId
         };
         _repositoryContext.Transactions.Add(transaction);
         await _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
-        var transactionHistory = new TransactionProtokol
+        var transactionHistory = new TransactionProtocol
         {
             AccountId = accountId,
             Account = account,
             Transaction = transaction,
-            State = TransactionState.Recived,
+            State = TransactionState.Received,
             Id = Guid.NewGuid(),
-            TimeCreated = timeRecived,
+            TimeCreated = timeReceived,
             TransactionId = transaction.Id
         };
-        _repositoryContext.TransactionProtokols.Add(transactionHistory);
+        _repositoryContext.TransactionProtocols.Add(transactionHistory);
         await _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
         return transaction;
     }
 
-    public async Task<TransactionProtokol> GetTransactionProtocolAsync(Guid requestTransactionId,
+    public async Task<TransactionProtocol> GetTransactionProtocolAsync(Guid requestTransactionId,
         CancellationToken? cancellationToken = null)
     {
-        return await _repositoryContext.TransactionProtokols.Include(tp=> tp.Transaction)
+        return await _repositoryContext.TransactionProtocols.Include(tp=> tp.Transaction)
             .SingleAsync(t => t.TransactionId == requestTransactionId, 
                 cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task UpdateTransactionStateAsync(TransactionProtokol transactionProtokol, TransactionState state,
+    public async Task UpdateTransactionStateAsync(TransactionProtocol transactionProtocol, TransactionState state,
         DateTime? timeOfExcecution = null, decimal? balanceBeforeExecution = null,
         decimal? balanceAfterExcecution = null,CancellationToken? cancellationToken = null)
     {
-        transactionProtokol.State = state;
-        transactionProtokol.TimeOfExecution = timeOfExcecution ?? transactionProtokol.TimeOfExecution;
-        transactionProtokol.BalanceBefore = balanceBeforeExecution ?? transactionProtokol.BalanceBefore;
-        transactionProtokol.BalanceAfter = balanceAfterExcecution ?? transactionProtokol.BalanceAfter;
+        transactionProtocol.State = state;
+        transactionProtocol.TimeOfExecution = timeOfExcecution ?? transactionProtocol.TimeOfExecution;
+        transactionProtocol.BalanceBefore = balanceBeforeExecution ?? transactionProtocol.BalanceBefore;
+        transactionProtocol.BalanceAfter = balanceAfterExcecution ?? transactionProtocol.BalanceAfter;
         await _repositoryContext.SaveChangesAsync(cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<List<TransactionProtokol>> GetAllTransactionsAsync(Guid[] requestValidatedTransactionIds, 
+    public async Task<List<TransactionProtocol>> GetAllTransactionsAsync(Guid[] requestValidatedTransactionIds, 
         Guid? onlyForAccountId, TransactionState? onlyInState, CancellationToken? cancellationToken = null)
     {
-        var protokols =  await _repositoryContext.TransactionProtokols
-            .Include(protokol => protokol.Transaction)
-            .Where(protokol => requestValidatedTransactionIds.Any(id => id == protokol.TransactionId))
+        var protocols =  await _repositoryContext.TransactionProtocols
+            .Include(protocol => protocol.Transaction)
+            .Where(protocol => requestValidatedTransactionIds.Any(id => id == protocol.TransactionId))
             .ToListAsync(cancellationToken ?? CancellationToken.None);
-        if(onlyForAccountId.HasValue && protokols.Any(tp => tp.AccountId != onlyForAccountId))
+        if(onlyForAccountId.HasValue && protocols.Any(tp => tp.AccountId != onlyForAccountId))
             throw new Exception("Includes transactions from other accounts");
-        if(onlyInState.HasValue && protokols.Any(tp => tp.State != onlyInState))
+        if(onlyInState.HasValue && protocols.Any(tp => tp.State != onlyInState))
             throw new Exception("Includes transactions in other states");
-        return protokols;
+        return protocols;
 
     }
 
-    public async Task<List<TransactionProtokol>> GetAllRecivedTransactionsAsync(int batchSizeValidation,
+    public async Task<List<TransactionProtocol>> GetAllReceivedTransactionsAsync(int batchSizeValidation,
         CancellationToken? cancellationToken = null)
     {
-        return await _repositoryContext.TransactionProtokols.Where(tp => tp.State == TransactionState.Recived)
+        return await _repositoryContext.TransactionProtocols.Where(tp => tp.State == TransactionState.Received)
             .OrderBy(tp => tp.TimeCreated)
             .Take(batchSizeValidation)
             .ToListAsync(cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<List<TransactionProtokol>> GetAllValidTransactionsAsync(int batchSizeExecution, 
+    public async Task<List<TransactionProtocol>> GetAllValidTransactionsAsync(int batchSizeExecution, 
         CancellationToken? cancellationToken = null)
     {
-        return await _repositoryContext.TransactionProtokols.Where(tp => tp.State == TransactionState.Valid)
+        return await _repositoryContext.TransactionProtocols.Where(tp => tp.State == TransactionState.Valid)
             .OrderBy(tp => tp.TimeCreated)
             .Take(batchSizeExecution)
             .ToListAsync(cancellationToken ?? CancellationToken.None);

@@ -9,5 +9,5 @@ public class Transaction
     public required Guid TargetAccountId { get; set; }
     public required Account TargetAccount { get; set; }
     public required TransactionType Type { get; set; }
-    public required DateTime TimeRecived { get; set; }
+    public required DateTime TimeReceived { get; set; }
 }
