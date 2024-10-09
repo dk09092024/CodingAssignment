@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using MediatR;
-using Domain;
-using Domain.Features.Customer.AddCustomer;
+﻿using Domain.Features.Customer.AddCustomer;
 
 namespace BankingAccountApi.Extensions;
 

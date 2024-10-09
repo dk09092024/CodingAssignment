@@ -1,6 +1,4 @@
-﻿using Domain.Features.Customer.AddCustomer;
-using Domain.Features.Customer.GetCustomerInformation;
-using Domain.Features.Transaction.ProcessTransactions;
+﻿using Domain.Features.Customer.GetCustomerInformation;
 
 namespace TransactionApi.Extensions;
 

@@ -10,11 +10,11 @@ public class TransactionValidator : AbstractValidator<Transaction>
         RuleFor(x => x.Amount)
             .GreaterThan(0)
             .WithMessage("Amount must be greater than 0");
-        RuleFor(x => x.TimeRecived)
+        RuleFor(x => x.TimeReceived)
             .NotNull()
-            .WithMessage("Time recived must be set")
+            .WithMessage("Time received must be set")
             .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("Time recived must be in the past");
+            .WithMessage("Time received must be in the past");
         RuleFor(x => x.Type)
             .IsInEnum()
             .WithMessage("Invalid transaction type");

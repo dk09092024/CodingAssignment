@@ -17,10 +17,10 @@ public class ValidateTransactionHandler : IRequestHandler<ValidateTransactionReq
 
     public async Task<ValidateTransactionResponse> Handle(ValidateTransactionRequest request, CancellationToken cancellationToken)
     {
-        var transactionProtokol = await _transactionRepository.GetTransactionProtocolAsync(request.TransactionId,
+        var transactionProtocol = await _transactionRepository.GetTransactionProtocolAsync(request.TransactionId,
             cancellationToken);
-        var validationResult = await _transactionValidator.ValidateAsync(transactionProtokol.Transaction, cancellationToken);
-        await _transactionRepository.UpdateTransactionStateAsync(transactionProtokol, 
+        var validationResult = await _transactionValidator.ValidateAsync(transactionProtocol.Transaction, cancellationToken);
+        await _transactionRepository.UpdateTransactionStateAsync(transactionProtocol, 
             validationResult.IsValid ? TransactionState.Valid : TransactionState.Invalid,
             null,null,null,cancellationToken);
         return new ValidateTransactionResponse(request.TransactionId, 

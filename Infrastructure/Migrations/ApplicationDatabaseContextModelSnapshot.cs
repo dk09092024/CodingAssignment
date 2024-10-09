@@ -49,7 +49,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("TargetAccountId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeRecived")
+                    b.Property<DateTime>("TimeReceived")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
@@ -94,7 +94,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Customer", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Model.TransactionProtokol", b =>
+            modelBuilder.Entity("Domain.Model.TransactionProtocol", b =>
                 {
                     b.HasBaseType("Domain.Model.General.Entity");
 
@@ -123,7 +123,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("TransactionId")
                         .IsUnique();
 
-                    b.ToTable("TransactionProtokoll", (string)null);
+                    b.ToTable("TransactionProtocoll", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Transaction", b =>
@@ -163,7 +163,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Model.TransactionProtokol", b =>
+            modelBuilder.Entity("Domain.Model.TransactionProtocol", b =>
                 {
                     b.HasOne("Domain.Model.Account", "Account")
                         .WithMany("TransactionHistory")
@@ -173,13 +173,13 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Model.General.Entity", null)
                         .WithOne()
-                        .HasForeignKey("Domain.Model.TransactionProtokol", "Id")
+                        .HasForeignKey("Domain.Model.TransactionProtocol", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Model.Transaction", "Transaction")
                         .WithOne()
-                        .HasForeignKey("Domain.Model.TransactionProtokol", "TransactionId")
+                        .HasForeignKey("Domain.Model.TransactionProtocol", "TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

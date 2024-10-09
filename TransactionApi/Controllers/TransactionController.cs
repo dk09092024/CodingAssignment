@@ -1,6 +1,5 @@
-using Domain.Features.Transaction.ReciveTransaction;
+using Domain.Features.Transaction.ReceiveTransaction;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TransactionApi.Controllers
@@ -16,8 +15,8 @@ namespace TransactionApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPut("recive-transaction/")]
-        public async Task<IActionResult> ReciveTransaction(ReciveTransactionRequest request)
+        [HttpPatch("transaction/")]
+        public async Task<IActionResult> ReceiveTransaction(ReceiveTransactionRequest request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

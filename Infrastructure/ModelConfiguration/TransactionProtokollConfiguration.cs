@@ -5,30 +5,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.ModelConfiguration;
 
-public class TransactionProtokollConfiguration : IEntityTypeConfiguration<TransactionProtokol>
+public class TransactionProtocollConfiguration : IEntityTypeConfiguration<TransactionProtocol>
 {
-    public void Configure(EntityTypeBuilder<TransactionProtokol> builder)
+    public void Configure(EntityTypeBuilder<TransactionProtocol> builder)
     {
-        builder.ToTable("TransactionProtokoll");
+        builder.ToTable("TransactionProtocoll");
         builder.HasBaseType<Entity>();
         
-        builder.Property(protokoll => protokoll.BalanceBefore)
+        builder.Property(protocoll => protocoll.BalanceBefore)
             .HasPrecision(13,2);
 
-        builder.Property(protokoll => protokoll.BalanceAfter)
+        builder.Property(protocoll => protocoll.BalanceAfter)
             .HasPrecision(13, 2);
 
-        builder.Property(protokoll => protokoll.State)
+        builder.Property(protocoll => protocoll.State)
             .IsRequired();
 
-        builder.Property(protokoll => protokoll.TimeOfExecution);
+        builder.Property(protocoll => protocoll.TimeOfExecution);
         
-        builder.HasOne(protokoll => protokoll.Transaction)
+        builder.HasOne(protocoll => protocoll.Transaction)
             .WithOne()
-            .HasForeignKey<TransactionProtokol>(protokoll => protokoll.TransactionId);
+            .HasForeignKey<TransactionProtocol>(protocoll => protocoll.TransactionId);
         
-        builder.HasOne(protokoll => protokoll.Account)
+        builder.HasOne(protocoll => protocoll.Account)
             .WithMany(account => account.TransactionHistory)
-            .HasForeignKey(protokoll => protokoll.AccountId);
+            .HasForeignKey(protocoll => protocoll.AccountId);
     }
 }
